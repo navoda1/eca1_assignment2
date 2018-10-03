@@ -19,9 +19,8 @@ entity mac_serial is
 
 end entity;
 
-
 architecture mac_arc of mac_serial is
-
+	-- Accumulate until 13 elements
 	signal acc : std_logic_vector(17 downto 0);
 	signal count : integer;
 
@@ -53,7 +52,5 @@ begin
 
 
 	end process;
-
-
 
 end mac_arc;

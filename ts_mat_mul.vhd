@@ -12,6 +12,8 @@ use work.mat_13x13_config.all;
 
   Entity ts_mat_mul is
   port(
+      dout_valid : in std_logic;
+
       clk     : out std_logic;
       reset   : out std_logic;
 
@@ -24,6 +26,8 @@ architecture testset of ts_mat_mul is
 
    signal clk_i : std_logic := '0';
    signal mat_a, mat_b : mat_in_13x13;
+   signal clk_count : integer := 0;
+   signal count_ctrl : std_logic;
 begin
 
    clock_gen:Process
@@ -33,8 +37,17 @@ begin
         wait for 5 ns;
         clk   <= clk_i;
       end loop;    
-   --assert false report "end" severity failure;
+   
    end Process;
+
+   clk_cnt_gen : process(clk_i)
+   begin
+    if rising_edge(clk_i) then
+      if (count_ctrl = '1') then
+        clk_count <= clk_count + 1;
+      end if;
+    end if;
+   end process;
 
    input_gen:Process
    Begin
@@ -66,14 +79,28 @@ begin
                 (std_logic_vector(to_signed(70 ,8)), std_logic_vector(to_signed(108,8)), std_logic_vector(to_signed(69 ,8)), std_logic_vector(to_signed(12 ,8)), std_logic_vector(to_signed(0  ,8)), std_logic_vector(to_signed(80 ,8)), std_logic_vector(to_signed(115,8)), std_logic_vector(to_signed(107,8)), std_logic_vector(to_signed(71 ,8)), std_logic_vector(to_signed(54 ,8)), std_logic_vector(to_signed(5  ,8)), std_logic_vector(to_signed(57,8)), std_logic_vector(to_signed(3  ,8)) ),
                 (std_logic_vector(to_signed(123,8)), std_logic_vector(to_signed(72 ,8)), std_logic_vector(to_signed(56 ,8)), std_logic_vector(to_signed(5  ,8)), std_logic_vector(to_signed(30 ,8)), std_logic_vector(to_signed(45 ,8)), std_logic_vector(to_signed(2  ,8)), std_logic_vector(to_signed(11 ,8)), std_logic_vector(to_signed(124,8)), std_logic_vector(to_signed(84 ,8)), std_logic_vector(to_signed(63 ,8)), std_logic_vector(to_signed(47,8)), std_logic_vector(to_signed(104,8)) ));
    
+   reset <= '1';
+   wait for 50 ns;
+   reset <= '0';
+
+   count_ctrl <= '1';
    --if (rising_edge(clk_i)) then
    	for i  in 0 to 12 loop
    		for j in 0 to 12 loop
-   			wait until rising_edge(clk_i);
-   			din_a <= mat_a(i,j);
-   			din_b <= mat_b(j,i);
+
+        for elem in 0 to 12 loop
+     			wait until rising_edge(clk_i);
+          if (dout_valid = '1') then
+            wait until rising_edge(clk_i);
+          end if;
+     			din_a <= mat_a(i, elem);
+     			din_b <= mat_b(elem, j);
+        end loop;
    		end loop;
-	end loop;
+	  end loop;
+  count_ctrl <= '0';
+  wait for 100 ns;
+  assert false report "end" severity failure;
    --end if ;
    
    end process;

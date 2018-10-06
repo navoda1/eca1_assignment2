@@ -14,15 +14,17 @@ entity tb_mat_mul is
    
 end tb_mat_mul;
 
-architecture testset of ts_mat_mul is
+architecture testset of tb_mat_mul is
 
   Component ts_mat_mul is
   port(
+      dout_valid : in std_logic;
+      
       clk    : out std_logic;
       reset  : out std_logic;
 
-      din_a : in std_logic_vector(7 downto 0);
-      din_b : in std_logic_vector(7 downto 0)
+      din_a : out std_logic_vector(7 downto 0);
+      din_b : out std_logic_vector(7 downto 0)
       );
   end Component;
 
@@ -45,7 +47,7 @@ architecture testset of ts_mat_mul is
 
 begin
 
-ts_to_tb:ts_mat_mul port map(clk => clk_i, reset => reset_i, din_a => din_a_i, din_b => din_b_i);
+ts_to_tb:ts_mat_mul port map(clk => clk_i, reset => reset_i, din_a => din_a_i, din_b => din_b_i, dout_valid => dout_valid_i);
 ms_to_tb:mac_serial port map(clk => clk_i, reset => reset_i, din_a => din_a_i, din_b => din_b_i, dout => dout_i, dout_valid => dout_valid_i); 
 
 end architecture;

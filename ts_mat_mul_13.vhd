@@ -1,5 +1,5 @@
 -- ---------------------------------------------------------------------------------------------------------------------------------
--- Name        : ts_mat_mul
+-- Name        : ts_mat_mul_13
 -- Author      : Chirag, Navoda, Megha
 -- Description : Generates In matrix, clock and reset
 -- ---------------------------------------------------------------------------------------------------------------------------------
@@ -10,39 +10,28 @@ use ieee.numeric_std.all;
 library work;
 use work.mat_13x13_config.all;
 
-  Entity ts_mat_mul is
+  Entity ts_mat_mul_13 is
   port(
-      dout_valid : in std_logic;
+      clk      : in std_logic;
+      reset    : in std_logic;
 
-      clk     : out std_logic;
-      reset   : out std_logic;
-
-      din_a : out std_logic_vector(7 downto 0);
-      din_b : out std_logic_vector(7 downto 0)
+      din_13_a : out t_mat_line;
+      din_13_b : out t_mat_line
       );
   end Entity;
 
-architecture testset of ts_mat_mul is
+architecture testset_13 of ts_mat_mul_13 is
 
-   signal clk_i : std_logic := '0';
    signal mat_a, mat_b : mat_in_13x13;
+   signal mat_b_col, mat_a_row : t_mat_line := (x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00");
    signal clk_count : integer := 0;
    signal count_ctrl : std_logic;
+
 begin
 
-   clock_gen:Process
-   Begin
-      for i in 0 to 1000000 loop
-        clk_i <= not clk_i; 
-        wait for 5 ns;
-        clk   <= clk_i;
-      end loop;    
-   
-   end Process;
-
-   clk_cnt_gen : process(clk_i)
+   clk_cnt_gen : process(clk)
    begin
-    if rising_edge(clk_i) then
+    if rising_edge(clk) then
       if (count_ctrl = '1') then
         clk_count <= clk_count + 1;
       end if;
@@ -79,35 +68,29 @@ begin
                 (std_logic_vector(to_signed(70 ,8)), std_logic_vector(to_signed(108,8)), std_logic_vector(to_signed(69 ,8)), std_logic_vector(to_signed(12 ,8)), std_logic_vector(to_signed(0  ,8)), std_logic_vector(to_signed(80 ,8)), std_logic_vector(to_signed(115,8)), std_logic_vector(to_signed(107,8)), std_logic_vector(to_signed(71 ,8)), std_logic_vector(to_signed(54 ,8)), std_logic_vector(to_signed(5  ,8)), std_logic_vector(to_signed(57,8)), std_logic_vector(to_signed(3  ,8)) ),
                 (std_logic_vector(to_signed(123,8)), std_logic_vector(to_signed(72 ,8)), std_logic_vector(to_signed(56 ,8)), std_logic_vector(to_signed(5  ,8)), std_logic_vector(to_signed(30 ,8)), std_logic_vector(to_signed(45 ,8)), std_logic_vector(to_signed(2  ,8)), std_logic_vector(to_signed(11 ,8)), std_logic_vector(to_signed(124,8)), std_logic_vector(to_signed(84 ,8)), std_logic_vector(to_signed(63 ,8)), std_logic_vector(to_signed(47,8)), std_logic_vector(to_signed(104,8)) ));
    
-    reset <= '1';
-    wait for 50 ns;
-    reset <= '0';
+  wait until reset = '0';
 
     count_ctrl <= '1';
-    for i  in 0 to 12 loop
+   	for i  in 0 to 12 loop
    		for j in 0 to 12 loop
-
+        
         for elem in 0 to 12 loop
-          
-     			wait until rising_edge(clk_i);
-
-          -- Wait one cycle at output
-          -- input is not processed in this cycle
-          if (dout_valid = '1') then
-            wait until rising_edge(clk_i);
-          end if;
-
-     			din_a <= mat_a(i, elem);
-     			din_b <= mat_b(elem, j);
-
+          mat_a_row(elem) <= mat_a(i, elem);
+          mat_b_col(elem) <= mat_b(elem, j);
         end loop;
+
+        wait until rising_edge(clk);
+
+        din_13_a <= mat_a_row;
+   			din_13_b <= mat_b_col;
+
    		end loop;
     end loop;
 
     count_ctrl <= '0';
     wait for 100 ns;
 
-    assert false report "end" severity failure;
+    --assert false report "end" severity failure;
 
-  end process; 	
+  end process;
 end architecture;

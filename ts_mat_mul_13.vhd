@@ -12,8 +12,8 @@ use work.mat_13x13_config.all;
 
   Entity ts_mat_mul_13 is
   port(
-      clk      : out std_logic;
-      reset    : out std_logic;
+      clk      : in std_logic;
+      reset    : in std_logic;
 
       din_13_a : out t_mat_line;
       din_13_b : out t_mat_line

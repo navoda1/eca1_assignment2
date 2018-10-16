@@ -40,6 +40,20 @@ architecture testset of tb_mat_mul is
       );
   end Component;
 
+  Component ts_mat_mul_all is
+  port(
+      --dout_valid : in std_logic;
+
+      clk     : in std_logic;
+      reset   : in std_logic;
+
+      din_all_a : out mat_in_13x13;
+      din_all_b : out mat_in_13x13
+      );
+  end component;
+
+
+
   Component mac_serial is
   port(
       clk         : in std_logic;
@@ -65,12 +79,29 @@ architecture testset of tb_mat_mul is
     );
   end component;
 
+
+  component mac_parallel_all is
+  port (
+      clk     : in std_logic;
+      reset     : in std_logic;
+
+      din_all_a   : in mat_in_13x13;
+      din_all_b   : in mat_in_13x13;
+
+      dout    : out mat_out_13x13
+      --dout_valid  : out std_logic
+    );
+end component;
+
+
   signal clk                            : std_logic := '0';
   signal reset_i, dout_valid_i          : std_logic;
   signal din_a_i, din_b_i               : std_logic_vector(7 downto 0); 
   signal din_13_a_i, din_13_b_i         : t_mat_line; 
+  signal din_all_a_i, din_all_b_i       : mat_in_13x13;
   signal dout_i                         : std_logic_vector(17 downto 0); 
   signal dout_13_i                      : std_logic_vector(17 downto 0); 
+  signal dout_all_i                     : mat_out_13x13; 
 
 begin
 
@@ -101,6 +132,15 @@ begin
       din_13_b => din_13_b_i 
     );
 
+  ts_all_to_tb:ts_mat_mul_all
+  port map(
+      --dout_valid => dout_valid_i,
+      clk     => clk,
+      reset   => reset_i,
+      din_all_a   => din_all_a_i,
+      din_all_b   => din_all_b_i
+    );
+
   ms_to_tb:mac_serial 
     port map(
       clk => clk, 
@@ -119,5 +159,15 @@ begin
       din_13_b => din_13_b_i, 
       dout => dout_13_i
     );
+
+  ms_all_to_tb:mac_parallel_all
+   port map(
+      clk     => clk,
+      reset   => reset_i,
+      din_all_a => din_all_a_i,
+      din_all_b => din_all_b_i,
+      dout    => dout_all_i
+      --dout_valid => dout_valid_i
+    ); 
 
 end architecture;

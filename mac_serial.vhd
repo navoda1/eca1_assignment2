@@ -26,7 +26,7 @@ architecture mac_serial_arc of mac_serial is
 
 begin
 
-	process (clk)	
+	process (clk, reset)	
 	begin
 		if (reset = '1') then
 			acc <= (others => '0');

@@ -23,7 +23,7 @@ end entity;
 architecture mac_parallel_13_arc of mac_parallel_13 is
 
 begin
-	process (clk)	
+	process (clk, reset)	
 	begin
 		if (reset = '1') then
 			dout <= (others => '0');

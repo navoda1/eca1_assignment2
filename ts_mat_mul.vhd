@@ -14,7 +14,7 @@ use work.mat_13x13_config.all;
   port(
       dout_valid : in std_logic;
 
-      clk     : out std_logic;
+      clk     : in std_logic;
       reset   : out std_logic;
 
       din_a : out std_logic_vector(7 downto 0);
@@ -24,25 +24,15 @@ use work.mat_13x13_config.all;
 
 architecture testset of ts_mat_mul is
 
-   signal clk_i : std_logic := '0';
    signal mat_a, mat_b : mat_in_13x13;
    signal clk_count : integer := 0;
    signal count_ctrl : std_logic;
 begin
 
-   clock_gen:Process
-   Begin
-      for i in 0 to 1000000 loop
-        clk_i <= not clk_i; 
-        wait for 5 ns;
-        clk   <= clk_i;
-      end loop;    
-   
-   end Process;
 
-   clk_cnt_gen : process(clk_i)
+   clk_cnt_gen : process(clk)
    begin
-    if rising_edge(clk_i) then
+    if rising_edge(clk) then
       if (count_ctrl = '1') then
         clk_count <= clk_count + 1;
       end if;
@@ -89,12 +79,12 @@ begin
 
         for elem in 0 to 12 loop
           
-     			wait until rising_edge(clk_i);
+     			wait until rising_edge(clk);
 
           -- Wait one cycle at output
           -- input is not processed in this cycle
           if (dout_valid = '1') then
-            wait until rising_edge(clk_i);
+            wait until rising_edge(clk);
           end if;
 
      			din_a <= mat_a(i, elem);

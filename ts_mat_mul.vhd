@@ -29,7 +29,6 @@ architecture testset of ts_mat_mul is
    signal count_ctrl : std_logic;
 begin
 
-
    clk_cnt_gen : process(clk)
    begin
     if rising_edge(clk) then
@@ -71,7 +70,11 @@ begin
    
     reset <= '1';
     wait for 50 ns;
+    din_a <= (others=>'0');
+    din_b <= (others=>'0');
+    wait for 5 ns;
     reset <= '0';
+    
 
     count_ctrl <= '1';
     for i  in 0 to 12 loop
@@ -83,9 +86,9 @@ begin
 
           -- Wait one cycle at output
           -- input is not processed in this cycle
-          if (dout_valid = '1') then
-            wait until rising_edge(clk);
-          end if;
+          --if (dout_valid = '1') then
+            --wait until rising_edge(clk);
+          --end if;
 
      			din_a <= mat_a(i, elem);
      			din_b <= mat_b(elem, j);

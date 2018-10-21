@@ -44,11 +44,11 @@ architecture testset of tb_mat_mul is
   port(
       --dout_valid : in std_logic;
 
-      clk     : in std_logic;
-      reset   : in std_logic;
+      clk         : in std_logic;
+      reset       : in std_logic;
 
-      din_all_a : out mat_in_13x13;
-      din_all_b : out mat_in_13x13
+      din_all_a   : out mat_in_13x13;
+      din_all_b   : out mat_in_13x13
       );
   end component;
 
@@ -82,13 +82,13 @@ architecture testset of tb_mat_mul is
 
   component mac_parallel_all is
   port (
-      clk     : in std_logic;
-      reset     : in std_logic;
+      clk           : in std_logic;
+      reset         : in std_logic;
 
-      din_all_a   : in mat_in_13x13;
-      din_all_b   : in mat_in_13x13;
+      din_all_a     : in mat_in_13x13;
+      din_all_b     : in mat_in_13x13;
 
-      dout    : out mat_out_13x13
+      dout          : out mat_out_13x13
       --dout_valid  : out std_logic
     );
 end component;
@@ -115,7 +115,7 @@ begin
    
    end Process;
 
-  ts_to_tb:ts_mat_mul 
+  ts_mat_mul_i: ts_mat_mul 
     port map(
       clk => clk, 
       reset => reset_i, 
@@ -124,7 +124,7 @@ begin
       dout_valid => dout_valid_i
     );
 
-  ts_13_to_tb:ts_mat_mul_13 
+  ts_mat_mul_13_i: ts_mat_mul_13 
     port map(
       clk => clk, 
       reset => reset_i, 
@@ -132,7 +132,7 @@ begin
       din_13_b => din_13_b_i 
     );
 
-  ts_all_to_tb:ts_mat_mul_all
+  ts_mat_mul_all_i: ts_mat_mul_all
   port map(
       --dout_valid => dout_valid_i,
       clk     => clk,
@@ -141,7 +141,7 @@ begin
       din_all_b   => din_all_b_i
     );
 
-  ms_to_tb:mac_serial 
+  mac_serial_i: mac_serial 
     port map(
       clk => clk, 
       reset => reset_i, 
@@ -151,7 +151,7 @@ begin
       dout_valid => dout_valid_i
     ); 
 
-  ms_13_to_tb: mac_parallel_13
+   mac_parallel_13_i:  mac_parallel_13
     port map(
       clk => clk, 
       reset => reset_i, 
@@ -160,7 +160,7 @@ begin
       dout => dout_13_i
     );
 
-  ms_all_to_tb:mac_parallel_all
+  mac_parallel_all_i: mac_parallel_all
    port map(
       clk     => clk,
       reset   => reset_i,

@@ -68,6 +68,9 @@ begin
                 (std_logic_vector(to_signed(70 ,8)), std_logic_vector(to_signed(108,8)), std_logic_vector(to_signed(69 ,8)), std_logic_vector(to_signed(12 ,8)), std_logic_vector(to_signed(0  ,8)), std_logic_vector(to_signed(80 ,8)), std_logic_vector(to_signed(115,8)), std_logic_vector(to_signed(107,8)), std_logic_vector(to_signed(71 ,8)), std_logic_vector(to_signed(54 ,8)), std_logic_vector(to_signed(5  ,8)), std_logic_vector(to_signed(57,8)), std_logic_vector(to_signed(3  ,8)) ),
                 (std_logic_vector(to_signed(123,8)), std_logic_vector(to_signed(72 ,8)), std_logic_vector(to_signed(56 ,8)), std_logic_vector(to_signed(5  ,8)), std_logic_vector(to_signed(30 ,8)), std_logic_vector(to_signed(45 ,8)), std_logic_vector(to_signed(2  ,8)), std_logic_vector(to_signed(11 ,8)), std_logic_vector(to_signed(124,8)), std_logic_vector(to_signed(84 ,8)), std_logic_vector(to_signed(63 ,8)), std_logic_vector(to_signed(47,8)), std_logic_vector(to_signed(104,8)) ));
    
+  count_ctrl  <= '0';
+  din_13_a    <= (others => (others => '0'));
+  din_13_b    <= (others => (others => '0'));
   wait until reset = '0';
 
     count_ctrl <= '1';

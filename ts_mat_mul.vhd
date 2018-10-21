@@ -12,21 +12,21 @@ use work.mat_13x13_config.all;
 
   Entity ts_mat_mul is
   port(
-      dout_valid : in std_logic;
+        dout_valid  : in std_logic;
 
-      clk     : in std_logic;
-      reset   : out std_logic;
+        clk         : in std_logic;
+        reset       : out std_logic;
 
-      din_a : out std_logic_vector(7 downto 0);
-      din_b : out std_logic_vector(7 downto 0)
+        din_a       : out std_logic_vector(7 downto 0);
+        din_b       : out std_logic_vector(7 downto 0)
       );
   end Entity;
 
 architecture testset of ts_mat_mul is
 
-   signal mat_a, mat_b : mat_in_13x13;
-   signal clk_count : integer := 0;
-   signal count_ctrl : std_logic;
+   signal mat_a, mat_b  : mat_in_13x13;
+   signal clk_count     : integer := 0;
+   signal count_ctrl    : std_logic;
 begin
 
    clk_cnt_gen : process(clk)
@@ -68,12 +68,12 @@ begin
                 (std_logic_vector(to_signed(70 ,8)), std_logic_vector(to_signed(108,8)), std_logic_vector(to_signed(69 ,8)), std_logic_vector(to_signed(12 ,8)), std_logic_vector(to_signed(0  ,8)), std_logic_vector(to_signed(80 ,8)), std_logic_vector(to_signed(115,8)), std_logic_vector(to_signed(107,8)), std_logic_vector(to_signed(71 ,8)), std_logic_vector(to_signed(54 ,8)), std_logic_vector(to_signed(5  ,8)), std_logic_vector(to_signed(57,8)), std_logic_vector(to_signed(3  ,8)) ),
                 (std_logic_vector(to_signed(123,8)), std_logic_vector(to_signed(72 ,8)), std_logic_vector(to_signed(56 ,8)), std_logic_vector(to_signed(5  ,8)), std_logic_vector(to_signed(30 ,8)), std_logic_vector(to_signed(45 ,8)), std_logic_vector(to_signed(2  ,8)), std_logic_vector(to_signed(11 ,8)), std_logic_vector(to_signed(124,8)), std_logic_vector(to_signed(84 ,8)), std_logic_vector(to_signed(63 ,8)), std_logic_vector(to_signed(47,8)), std_logic_vector(to_signed(104,8)) ));
    
-    reset <= '1';
+    count_ctrl  <= '0';
+    reset       <= '1';
+    din_a       <= (others=>'0');
+    din_b       <= (others=>'0');
     wait for 50 ns;
-    din_a <= (others=>'0');
-    din_b <= (others=>'0');
-    wait for 5 ns;
-    reset <= '0';
+    reset       <= '0';
     
 
     count_ctrl <= '1';
@@ -87,7 +87,7 @@ begin
           -- Wait one cycle at output
           -- input is not processed in this cycle
           --if (dout_valid = '1') then
-            --wait until rising_edge(clk);
+          --  wait until rising_edge(clk);
           --end if;
 
      			din_a <= mat_a(i, elem);

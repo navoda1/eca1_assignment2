@@ -43,7 +43,7 @@ begin
 							 	resize(unsigned(din_13_a(9)) * unsigned(din_13_b(9)), dout'length) +
 							 	resize(unsigned(din_13_a(10)) * unsigned(din_13_b(10)), dout'length) +
 							 	resize(unsigned(din_13_a(11)) * unsigned(din_13_b(11)), dout'length) +
-							 	resize(unsigned(din_13_a(12)) * unsigned(din_13_b(12)), dout'length)
+							 	resize(unsigned(din_13_a(12)) * unsigned(din_13_b(12)), dout'length) +
 						 	);
 		end if;
 	end process;

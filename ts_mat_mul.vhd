@@ -15,7 +15,7 @@ use work.mat_13x13_config.all;
         dout_valid  : in std_logic;
 
         clk         : in std_logic;
-        reset       : out std_logic;
+        reset       : in std_logic;
 
         din_a       : out std_logic_vector(7 downto 0);
         din_b       : out std_logic_vector(7 downto 0)
@@ -69,12 +69,9 @@ begin
                 (std_logic_vector(to_signed(123,8)), std_logic_vector(to_signed(72 ,8)), std_logic_vector(to_signed(56 ,8)), std_logic_vector(to_signed(5  ,8)), std_logic_vector(to_signed(30 ,8)), std_logic_vector(to_signed(45 ,8)), std_logic_vector(to_signed(2  ,8)), std_logic_vector(to_signed(11 ,8)), std_logic_vector(to_signed(124,8)), std_logic_vector(to_signed(84 ,8)), std_logic_vector(to_signed(63 ,8)), std_logic_vector(to_signed(47,8)), std_logic_vector(to_signed(104,8)) ));
    
     count_ctrl  <= '0';
-    reset       <= '1';
     din_a       <= (others=>'0');
     din_b       <= (others=>'0');
-    wait for 50 ns;
-    reset       <= '0';
-    
+    wait until reset = '0';
 
     count_ctrl <= '1';
     for i  in 0 to 12 loop

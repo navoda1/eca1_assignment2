@@ -22,7 +22,7 @@ architecture testset of tb_mat_mul is
       dout_valid  : in std_logic;
       
       clk         : in std_logic;
-      reset       : out std_logic;
+      reset       : in std_logic;
 
       din_a       : out std_logic_vector(7 downto 0);
       din_b       : out std_logic_vector(7 downto 0)
@@ -105,68 +105,76 @@ end component;
 
 begin
 
-   clock_gen:Process
-   Begin
-      for i in 0 to 1000000 loop
-        clk <= not clk; 
-        wait for 5 ns;
-        clk   <= clk;
-      end loop;    
-   
-   end Process;
+  clock_gen: process
+  begin
+    while true loop
+      clk <= not clk; 
+      wait for 5 ns;
+      clk   <= clk;
+    end loop;    
+
+  end process;
+
+  reset_gen: Process
+  begin
+    reset_i       <= '1';
+    wait for 45 ns;
+    reset_i       <= '0';
+    wait;
+  end process; 
 
   ts_mat_mul_i: ts_mat_mul 
     port map(
-      clk => clk, 
-      reset => reset_i, 
-      din_a => din_a_i, 
-      din_b => din_b_i, 
-      dout_valid => dout_valid_i
+      clk         => clk, 
+      reset       => reset_i, 
+      din_a       => din_a_i, 
+      din_b       => din_b_i, 
+      dout_valid  => dout_valid_i
     );
 
   ts_mat_mul_13_i: ts_mat_mul_13 
     port map(
-      clk => clk, 
-      reset => reset_i, 
-      din_13_a => din_13_a_i, 
-      din_13_b => din_13_b_i 
+      clk         => clk, 
+      reset       => reset_i, 
+      din_13_a    => din_13_a_i, 
+      din_13_b    => din_13_b_i 
     );
 
   ts_mat_mul_all_i: ts_mat_mul_all
   port map(
       --dout_valid => dout_valid_i,
-      clk     => clk,
-      reset   => reset_i,
+      clk         => clk,
+      reset       => reset_i,
       din_all_a   => din_all_a_i,
       din_all_b   => din_all_b_i
     );
 
   mac_serial_i: mac_serial 
     port map(
-      clk => clk, 
-      reset => reset_i, 
-      din_a => din_a_i, 
-      din_b => din_b_i, 
-      dout => dout_i, 
-      dout_valid => dout_valid_i
+      clk         => clk, 
+      reset       => reset_i, 
+      din_a       => din_a_i, 
+      din_b       => din_b_i, 
+      dout        => dout_i, 
+      dout_valid  => dout_valid_i
     ); 
 
    mac_parallel_13_i:  mac_parallel_13
     port map(
-      clk => clk, 
-      reset => reset_i, 
-      din_13_a => din_13_a_i, 
-      din_13_b => din_13_b_i, 
-      dout => dout_13_i
+      clk         => clk, 
+      reset       => reset_i, 
+      din_13_a    => din_13_a_i, 
+      din_13_b    => din_13_b_i, 
+      dout        => dout_13_i
     );
 
   mac_parallel_all_i: mac_parallel_all
    port map(
-      clk     => clk,
-      reset   => reset_i,
-      din_all_a => din_all_a_i,
-      din_all_b => din_all_b_i,
-      dout    => dout_all_i
+      clk         => clk,
+      reset       => reset_i,
+      din_all_a   => din_all_a_i,
+      din_all_b   => din_all_b_i,
+      dout        => dout_all_i
       --dout_valid => dout_valid_i
     ); 
 

@@ -30,17 +30,17 @@ architecture testset of ts_mat_mul is
    signal count_ctrl    : std_logic;
 begin
 
-   clk_cnt_gen : process(clk)
-   begin
-    if rising_edge(clk) then
-      if (count_ctrl = '1') then
-        clk_count <= clk_count + 1;
+    clk_cnt_gen : process(clk)
+    begin
+      if rising_edge(clk) then
+        if (count_ctrl = '1') then
+          clk_count <= clk_count + 1;
+        end if;
       end if;
-    end if;
-   end process;
+    end process;
 
-   input_gen:Process
-   Begin
+    input_gen:Process
+    Begin
       mat_a <= ((std_logic_vector(to_signed(28 ,8)), std_logic_vector(to_signed(122,8)), std_logic_vector(to_signed(80 ,8)), std_logic_vector(to_signed(42 ,8)), std_logic_vector(to_signed(54 ,8)), std_logic_vector(to_signed(122,8)), std_logic_vector(to_signed(98 ,8)), std_logic_vector(to_signed(42 ,8)), std_logic_vector(to_signed(99 ,8)), std_logic_vector(to_signed(58 ,8)), std_logic_vector(to_signed(124,8)), std_logic_vector(to_signed(29 ,8)), std_logic_vector(to_signed(21,8))  ),
                 (std_logic_vector(to_signed(113,8)), std_logic_vector(to_signed(85 ,8)), std_logic_vector(to_signed(30 ,8)), std_logic_vector(to_signed(35 ,8)), std_logic_vector(to_signed(41 ,8)), std_logic_vector(to_signed(98 ,8)), std_logic_vector(to_signed(103,8)), std_logic_vector(to_signed(68 ,8)), std_logic_vector(to_signed(15 ,8)), std_logic_vector(to_signed(50 ,8)), std_logic_vector(to_signed(31 ,8)), std_logic_vector(to_signed(80 ,8)), std_logic_vector(to_signed(54,8))  ),
                 (std_logic_vector(to_signed(47 ,8)), std_logic_vector(to_signed(37 ,8)), std_logic_vector(to_signed(23 ,8)), std_logic_vector(to_signed(96 ,8)), std_logic_vector(to_signed(59 ,8)), std_logic_vector(to_signed(47 ,8)), std_logic_vector(to_signed(84 ,8)), std_logic_vector(to_signed(26 ,8)), std_logic_vector(to_signed(84 ,8)), std_logic_vector(to_signed(72 ,8)), std_logic_vector(to_signed(51 ,8)), std_logic_vector(to_signed(118,8)), std_logic_vector(to_signed(119,8)) ),
@@ -55,7 +55,7 @@ begin
                 (std_logic_vector(to_signed(25 ,8)), std_logic_vector(to_signed(109,8)), std_logic_vector(to_signed(74 ,8)), std_logic_vector(to_signed(3  ,8)), std_logic_vector(to_signed(126,8)), std_logic_vector(to_signed(56 ,8)), std_logic_vector(to_signed(99 ,8)), std_logic_vector(to_signed(15 ,8)), std_logic_vector(to_signed(69 ,8)), std_logic_vector(to_signed(73 ,8)), std_logic_vector(to_signed(76 ,8)), std_logic_vector(to_signed(19 ,8)), std_logic_vector(to_signed(97,8))  ),
                 (std_logic_vector(to_signed(59 ,8)), std_logic_vector(to_signed(84 ,8)), std_logic_vector(to_signed(102,8)), std_logic_vector(to_signed(53 ,8)), std_logic_vector(to_signed(30 ,8)), std_logic_vector(to_signed(34 ,8)), std_logic_vector(to_signed(33 ,8)), std_logic_vector(to_signed(105,8)), std_logic_vector(to_signed(75 ,8)), std_logic_vector(to_signed(102,8)), std_logic_vector(to_signed(60 ,8)), std_logic_vector(to_signed(121,8)), std_logic_vector(to_signed(93,8))  ));
 
-     mat_b <=  ((std_logic_vector(to_signed(102,8)), std_logic_vector(to_signed(61 ,8)), std_logic_vector(to_signed(111,8)), std_logic_vector(to_signed(79 ,8)), std_logic_vector(to_signed(99 ,8)), std_logic_vector(to_signed(3  ,8)), std_logic_vector(to_signed(25 ,8)), std_logic_vector(to_signed(50 ,8)), std_logic_vector(to_signed(33 ,8)), std_logic_vector(to_signed(48 ,8)), std_logic_vector(to_signed(5  ,8)), std_logic_vector(to_signed(94,8)), std_logic_vector(to_signed(28 ,8)) ),
+      mat_b <=  ((std_logic_vector(to_signed(102,8)), std_logic_vector(to_signed(61 ,8)), std_logic_vector(to_signed(111,8)), std_logic_vector(to_signed(79 ,8)), std_logic_vector(to_signed(99 ,8)), std_logic_vector(to_signed(3  ,8)), std_logic_vector(to_signed(25 ,8)), std_logic_vector(to_signed(50 ,8)), std_logic_vector(to_signed(33 ,8)), std_logic_vector(to_signed(48 ,8)), std_logic_vector(to_signed(5  ,8)), std_logic_vector(to_signed(94,8)), std_logic_vector(to_signed(28 ,8)) ),
                 (std_logic_vector(to_signed(106,8)), std_logic_vector(to_signed(89 ,8)), std_logic_vector(to_signed(35 ,8)), std_logic_vector(to_signed(37 ,8)), std_logic_vector(to_signed(112,8)), std_logic_vector(to_signed(51 ,8)), std_logic_vector(to_signed(13 ,8)), std_logic_vector(to_signed(70 ,8)), std_logic_vector(to_signed(3  ,8)), std_logic_vector(to_signed(110,8)), std_logic_vector(to_signed(31 ,8)), std_logic_vector(to_signed(7 ,8)), std_logic_vector(to_signed(99 ,8)) ),
                 (std_logic_vector(to_signed(65 ,8)), std_logic_vector(to_signed(115,8)), std_logic_vector(to_signed(94 ,8)), std_logic_vector(to_signed(68 ,8)), std_logic_vector(to_signed(95 ,8)), std_logic_vector(to_signed(114,8)), std_logic_vector(to_signed(34 ,8)), std_logic_vector(to_signed(34 ,8)), std_logic_vector(to_signed(64 ,8)), std_logic_vector(to_signed(1  ,8)), std_logic_vector(to_signed(11 ,8)), std_logic_vector(to_signed(66,8)), std_logic_vector(to_signed(126,8)) ),
                 (std_logic_vector(to_signed(114,8)), std_logic_vector(to_signed(37 ,8)), std_logic_vector(to_signed(42 ,8)), std_logic_vector(to_signed(3  ,8)), std_logic_vector(to_signed(88 ,8)), std_logic_vector(to_signed(35 ,8)), std_logic_vector(to_signed(124,8)), std_logic_vector(to_signed(50 ,8)), std_logic_vector(to_signed(74 ,8)), std_logic_vector(to_signed(95 ,8)), std_logic_vector(to_signed(25 ,8)), std_logic_vector(to_signed(34,8)), std_logic_vector(to_signed(24 ,8)) ),
@@ -69,32 +69,33 @@ begin
                 (std_logic_vector(to_signed(70 ,8)), std_logic_vector(to_signed(108,8)), std_logic_vector(to_signed(69 ,8)), std_logic_vector(to_signed(12 ,8)), std_logic_vector(to_signed(0  ,8)), std_logic_vector(to_signed(80 ,8)), std_logic_vector(to_signed(115,8)), std_logic_vector(to_signed(107,8)), std_logic_vector(to_signed(71 ,8)), std_logic_vector(to_signed(54 ,8)), std_logic_vector(to_signed(5  ,8)), std_logic_vector(to_signed(57,8)), std_logic_vector(to_signed(3  ,8)) ),
                 (std_logic_vector(to_signed(123,8)), std_logic_vector(to_signed(72 ,8)), std_logic_vector(to_signed(56 ,8)), std_logic_vector(to_signed(5  ,8)), std_logic_vector(to_signed(30 ,8)), std_logic_vector(to_signed(45 ,8)), std_logic_vector(to_signed(2  ,8)), std_logic_vector(to_signed(11 ,8)), std_logic_vector(to_signed(124,8)), std_logic_vector(to_signed(84 ,8)), std_logic_vector(to_signed(63 ,8)), std_logic_vector(to_signed(47,8)), std_logic_vector(to_signed(104,8)) ));
    
-    count_ctrl  <= '0';
-    din_a       <= (others=>'0');
-    din_b       <= (others=>'0');
-    din_2a      <= (others=>'0');
-    wait until reset = '0';
+      count_ctrl  <= '0';
+      din_a       <= (others=>'0');
+      din_b       <= (others=>'0');
+      din_2a      <= (others=>'0');
+      wait until reset = '0';
 
-    count_ctrl <= '1';
-    for i  in 0 to 12 loop
-   		for j in 0 to 12 loop
+      count_ctrl <= '1';
+      for i  in 0 to 12 loop
+      	for j in 0 to 12 loop
 
-        for elem in 0 to 12 loop
-          
-     			wait until rising_edge(clk);
+          for elem in 0 to 12 loop
+            
+       			wait until rising_edge(clk);
 
-          din_2a  <= mat_a(i, j);
-     			din_a   <= mat_a(i, elem);
-     			din_b   <= mat_b(elem, j);
+            din_2a  <= mat_a(i, j);
+       			din_a   <= mat_a(i, elem);
+       			din_b   <= mat_b(elem, j);
 
-        end loop;
-   		end loop;
-    end loop;
+          end loop;
+      	end loop;
+      end loop;
 
-    count_ctrl <= '0';
-    wait for 100 ns;
+      count_ctrl <= '0';
 
-    assert false report "end" severity failure;
+      wait for 100 ns;
+
+      assert false report "end" severity failure;
 
   end process; 	
 end architecture;

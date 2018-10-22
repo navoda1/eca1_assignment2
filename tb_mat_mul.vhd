@@ -24,6 +24,7 @@ architecture testset of tb_mat_mul is
       clk         : in std_logic;
       reset       : in std_logic;
 
+      din_2a      : out std_logic_vector(7 downto 0);
       din_a       : out std_logic_vector(7 downto 0);
       din_b       : out std_logic_vector(7 downto 0)
       );
@@ -59,6 +60,7 @@ architecture testset of tb_mat_mul is
       clk         : in std_logic;
       reset       : in std_logic;
       
+      din_2a      : in std_logic_vector(7 downto 0);
       din_a       : in std_logic_vector(7 downto 0);
       din_b       : in std_logic_vector(7 downto 0);
 
@@ -96,7 +98,7 @@ end component;
 
   signal clk                            : std_logic := '0';
   signal reset_i, dout_valid_i          : std_logic;
-  signal din_a_i, din_b_i               : std_logic_vector(7 downto 0); 
+  signal din_a_i, din_b_i, din_2a_i     : std_logic_vector(7 downto 0); 
   signal din_13_a_i, din_13_b_i         : t_mat_line; 
   signal din_all_a_i, din_all_b_i       : mat_in_13x13;
   signal dout_i                         : std_logic_vector(17 downto 0); 
@@ -127,6 +129,7 @@ begin
     port map(
       clk         => clk, 
       reset       => reset_i, 
+      din_2a      => din_2a_i, 
       din_a       => din_a_i, 
       din_b       => din_b_i, 
       dout_valid  => dout_valid_i
@@ -153,6 +156,7 @@ begin
     port map(
       clk         => clk, 
       reset       => reset_i, 
+      din_2a      => din_2a_i, 
       din_a       => din_a_i, 
       din_b       => din_b_i, 
       dout        => dout_i, 

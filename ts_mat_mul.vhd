@@ -17,6 +17,7 @@ use work.mat_13x13_config.all;
         clk         : in std_logic;
         reset       : in std_logic;
 
+        din_2a      : out std_logic_vector(7 downto 0);
         din_a       : out std_logic_vector(7 downto 0);
         din_b       : out std_logic_vector(7 downto 0)
       );
@@ -71,6 +72,7 @@ begin
     count_ctrl  <= '0';
     din_a       <= (others=>'0');
     din_b       <= (others=>'0');
+    din_2a      <= (others=>'0');
     wait until reset = '0';
 
     count_ctrl <= '1';
@@ -81,14 +83,9 @@ begin
           
      			wait until rising_edge(clk);
 
-          -- Wait one cycle at output
-          -- input is not processed in this cycle
-          --if (dout_valid = '1') then
-          --  wait until rising_edge(clk);
-          --end if;
-
-     			din_a <= mat_a(i, elem);
-     			din_b <= mat_b(elem, j);
+          din_2a  <= mat_a(i, j);
+     			din_a   <= mat_a(i, elem);
+     			din_b   <= mat_b(elem, j);
 
         end loop;
    		end loop;

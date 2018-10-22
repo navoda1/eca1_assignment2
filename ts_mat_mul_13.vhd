@@ -15,6 +15,7 @@ use work.mat_13x13_config.all;
       clk      : in std_logic;
       reset    : in std_logic;
 
+      din_2a   : out std_logic_vector(7 downto 0);
       din_13_a : out t_mat_line;
       din_13_b : out t_mat_line
       );
@@ -71,6 +72,7 @@ begin
   count_ctrl  <= '0';
   din_13_a    <= (others => (others => '0'));
   din_13_b    <= (others => (others => '0'));
+  din_2a      <= (others=>'0');
   wait until reset = '0';
 
     count_ctrl <= '1';
@@ -84,6 +86,7 @@ begin
 
         wait until rising_edge(clk);
 
+        din_2a   <= mat_a(i, j);
         din_13_a <= mat_a_row;
    			din_13_b <= mat_b_col;
 

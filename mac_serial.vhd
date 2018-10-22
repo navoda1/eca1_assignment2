@@ -22,10 +22,10 @@ end entity;
 
 architecture mac_serial_arc of mac_serial is
 	-- Accumulate until 13 elements
-	signal din_2a_i	: std_logic_vector(8 downto 0);
 	signal acc 			: std_logic_vector(17 downto 0);
 	signal count 		: integer range 0 to 13;
 	signal init 		: std_logic;
+	signal din_2a_i	: std_logic_vector(8 downto 0);
 begin
 
 	process (clk, reset)	

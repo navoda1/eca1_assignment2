@@ -12,6 +12,7 @@ entity mac_parallel_13 is
 			clk 		: in std_logic;
 			reset 		: in std_logic;
 
+      		din_2a  	: in std_logic_vector(7 downto 0);
 			din_13_a 	: in t_mat_line;
 			din_13_b 	: in t_mat_line;
 
@@ -21,7 +22,7 @@ entity mac_parallel_13 is
 end entity;
 
 architecture mac_parallel_13_arc of mac_parallel_13 is
-
+	signal din_2a_i	: std_logic_vector(8 downto 0);
 begin
 	process (clk, reset)	
 	begin
@@ -43,8 +44,12 @@ begin
 							 	resize(unsigned(din_13_a(9)) * unsigned(din_13_b(9)), dout'length) +
 							 	resize(unsigned(din_13_a(10)) * unsigned(din_13_b(10)), dout'length) +
 							 	resize(unsigned(din_13_a(11)) * unsigned(din_13_b(11)), dout'length) +
-							 	resize(unsigned(din_13_a(12)) * unsigned(din_13_b(12)), dout'length)
+							 	resize(unsigned(din_13_a(12)) * unsigned(din_13_b(12)), dout'length) +
+							 	resize(unsigned(din_2a_i), dout'length) -- + 2A
 						 	);
 		end if;
 	end process;
+
+	din_2a_i 	 <= din_2a & '0'; -- left shift (2x)
+
 end mac_parallel_13_arc;

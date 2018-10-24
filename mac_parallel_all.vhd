@@ -17,10 +17,9 @@ entity mac_parallel_all is
       		index1       	: in natural range 0 to 13;
       		index2      	: in natural range 0 to 13; 
 
-      		dout_valid      : out std_logic;
-			dout_all		: out std_logic_vector(18 downto 0);
-			--index_o1		: out natural range 0 to 13; 
-			--index_o2		: out natural range 0 to 13 
+      		--dout_valid      : out std_logic;
+			dout_all		: out std_logic_vector(18 downto 0)
+
 		);
 
 end entity;
@@ -46,7 +45,7 @@ begin
 				end loop;
 			end loop;	
 			acc := (others=>'0');
-			dout_valid <= '0';
+			--dout_valid <= '0';
 			count_iter <= 0;
 		elsif rising_edge(clk) then
 			for i  in 0 to 12 loop
@@ -57,12 +56,12 @@ begin
 		       		end loop;
 			       	dout_all_i(i,j)  <= acc;
 
-			       	if( count_iter = 169) then	
-			    		dout_valid <= '1';
-			    		dout_valid_i <= '1';
-			    	else
-			    		count_iter <= count_iter+1;		
-			    	end if;
+			     --  	if( count_iter = 169) then	
+			    	--	dout_valid <= '1';
+			    	--	dout_valid_i <= '1';
+			    	--else
+			    	--	count_iter <= count_iter+1;		
+			    	--end if;
 		  		end loop;
 	    	end loop;
 		end if;
@@ -75,17 +74,13 @@ begin
 	end process;
 
 
-	--process(din_all_a_in,din_all_b_in,index1,index2)
-	--begin
+	process(dout_all_i,index1,index2)
+	begin
 	--if(dout_valid_i = '1') then	
-	--	for i  in 0 to 12 loop
- --  			for j in 0 to 12 loop
-	--			dout_all <= dout_all_i(i,j);
-	--			index_o1 <= i;
-	--			index_o2 <= j;
-	--		end loop;
-	--	end loop;
+
+				dout_all <= dout_all_i(index1,index2);
+
 	--end if;			
-	--end process;
+	end process;
 
 end mac_parallel_all_arc;

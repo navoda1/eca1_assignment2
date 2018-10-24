@@ -17,8 +17,9 @@ entity mac_parallel_all is
       		index1       	: in natural range 0 to 13;
       		index2      	: in natural range 0 to 13; 
 
-      		--dout_valid      : out std_logic;
-			dout_all		: out std_logic_vector(18 downto 0)
+			dout_all		: out std_logic_vector(18 downto 0);
+			indexO1			: in natural range 0 to 13;
+			indexO2			: in natural range 0 to 13
 
 		);
 
@@ -28,8 +29,8 @@ architecture mac_parallel_all_arc of mac_parallel_all is
 signal	din_all_a 	: mat_in_13x13;
 signal	din_all_b 	: mat_in_13x13;
 signal  dout_all_i	: mat_out_13x13;
-signal 	dout_valid_i: std_logic;
-signal count_iter 	: natural range 0 to 169;
+signal count_iter 	: natural range 0 to 170;
+--signal cal			: std_logic;
 
 
 
@@ -54,14 +55,7 @@ begin
 		        	for elem in 0 to 12 loop
 		        		acc := std_logic_vector((unsigned(din_all_a (i, elem)) * unsigned(din_all_b(elem,j))) + unsigned(acc));
 		       		end loop;
-			       	dout_all_i(i,j)  <= acc;
-
-			     --  	if( count_iter = 169) then	
-			    	--	dout_valid <= '1';
-			    	--	dout_valid_i <= '1';
-			    	--else
-			    	--	count_iter <= count_iter+1;		
-			    	--end if;
+			       	dout_all_i(i,j)  <= std_logic_vector(unsigned(acc)+2*unsigned(din_all_a(i,j)));
 		  		end loop;
 	    	end loop;
 		end if;
@@ -74,13 +68,9 @@ begin
 	end process;
 
 
-	process(dout_all_i,index1,index2)
+	process(indexO1,indexO2)
 	begin
-	--if(dout_valid_i = '1') then	
-
-				dout_all <= dout_all_i(index1,index2);
-
-	--end if;			
+				dout_all <= dout_all_i(indexO1,indexO2);
 	end process;
 
 end mac_parallel_all_arc;

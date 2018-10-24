@@ -42,15 +42,23 @@ architecture testset of tb_mat_mul is
       );
   end Component;
 
+
   Component ts_mat_mul_all is
   port(
       --dout_valid : in std_logic;
 
-      clk         : in std_logic;
-      reset       : in std_logic;
+    clk         : in std_logic;
+    reset       : in std_logic;
 
-      din_all_a   : out mat_in_13x13;
-      din_all_b   : out mat_in_13x13
+    index1       : out natural range 0 to 13;
+    index2       : out natural range 0 to 13; 
+    din_all_a_in : out std_logic_vector(7 downto 0);
+    din_all_b_in : out std_logic_vector(7 downto 0);
+    
+    dout_all    : in std_logic_vector(18 downto 0);
+    indexO1     : out natural range 0 to 13;
+    indexO2     : out natural range 0 to 13
+
       );
   end component;
 
@@ -86,14 +94,18 @@ architecture testset of tb_mat_mul is
 
   component mac_parallel_all is
   port (
-      clk           : in std_logic;
-      reset         : in std_logic;
+      clk       : in std_logic;
+      reset       : in std_logic;
 
-      din_all_a     : in mat_in_13x13;
-      din_all_b     : in mat_in_13x13;
+      din_all_a_in  : in std_logic_vector(7 downto 0);
+      din_all_b_in  : in std_logic_vector(7 downto 0);
+      index1        : in natural range 0 to 13;
+      index2        : in natural range 0 to 13; 
 
-      dout          : out mat_out_13x13
-      --dout_valid  : out std_logic
+      dout_all    : out std_logic_vector(18 downto 0);
+      indexO1     : in natural range 0 to 13;
+      indexO2     : in natural range 0 to 13
+
     );
 end component;
 
@@ -104,10 +116,14 @@ end component;
   signal din_2a_i                       : std_logic_vector(7 downto 0); 
   signal din_13_a_i, din_13_b_i         : t_mat_line; 
   signal din_13_2a_i                    : std_logic_vector(7 downto 0); 
-  signal din_all_a_i, din_all_b_i       : mat_in_13x13;
+  signal din_all_a_in_i, din_all_b_in_i : std_logic_vector(7 downto 0);
   signal dout_i                         : std_logic_vector(17 downto 0); 
   signal dout_13_i                      : std_logic_vector(17 downto 0); 
-  signal dout_all_i                     : mat_out_13x13; 
+  signal dout_all_i                     : std_logic_vector(18 downto 0); 
+  signal index1_i                       : natural range 0 to 13;
+  signal index2_i                       : natural range 0 to 13;
+  signal indexO1_i                       : natural range 0 to 13;
+  signal indexO2_i                       : natural range 0 to 13;
 
 begin
 
@@ -148,14 +164,18 @@ begin
       din_13_b    => din_13_b_i 
     );
 
-  ts_mat_mul_all_i: ts_mat_mul_all
-  port map(
-      --dout_valid => dout_valid_i,
-      clk         => clk,
-      reset       => reset_i,
-      din_all_a   => din_all_a_i,
-      din_all_b   => din_all_b_i
-    );
+    ts_mat_mul_all_i: ts_mat_mul_all
+    port map(
+        clk           => clk,
+        reset         => reset_i,
+        index1        => index1_i,
+        index2        => index2_i,
+        din_all_a_in  => din_all_a_in_i,
+        din_all_b_in  => din_all_b_in_i,
+        dout_all      => dout_all_i,
+        indexO1       => indexO1_i,
+        indexO2       => indexO2_i
+      );
 
   mac_serial_i: mac_serial 
     port map(
@@ -180,11 +200,15 @@ begin
 
   mac_parallel_all_i: mac_parallel_all
    port map(
-      clk         => clk,
-      reset       => reset_i,
-      din_all_a   => din_all_a_i,
-      din_all_b   => din_all_b_i,
-      dout        => dout_all_i
+      clk            => clk,
+      reset          => reset_i,
+      din_all_a_in   => din_all_a_in_i,
+      din_all_b_in   => din_all_b_in_i,
+      index1         => index1_i,
+      index2         => index2_i,
+      dout_all       => dout_all_i,
+      indexO1        => indexO1_i,
+      indexO2        => indexO2_i
       --dout_valid => dout_valid_i
     ); 
 

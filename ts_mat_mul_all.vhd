@@ -14,11 +14,19 @@ use work.mat_13x13_config.all;
   port(
       --dout_valid : in std_logic;
 
-      clk     : in std_logic;
-      reset   : in std_logic;
+    clk     : in std_logic;
+    reset   : in std_logic;
 
-      din_all_a : out mat_in_13x13;
-      din_all_b : out mat_in_13x13
+	  index1       : out natural range 0 to 13;
+	  index2       : out natural range 0 to 13; 
+	  din_all_a_in : out std_logic_vector(7 downto 0);
+	  din_all_b_in : out std_logic_vector(7 downto 0);
+	  
+	  dout_all		: in std_logic_vector(18 downto 0);
+    indexO1     : out natural range 0 to 13;
+    indexO2     : out natural range 0 to 13
+
+
       );
   end Entity;
 
@@ -27,9 +35,11 @@ architecture testset_all of ts_mat_mul_all is
    signal mat_a, mat_b : mat_in_13x13;
    signal clk_count : integer := 0;
    signal count_ctrl : std_logic;
+   signal result_mat	: mat_out_13x13; 
+   signal stopl     : std_logic := '0';   
 begin
 
-  clk_cnt_gen : process(clk)
+  clk_cnt_gen : process(clk,count_ctrl)
    begin
     if rising_edge(clk) then
       if (count_ctrl = '1') then
@@ -39,6 +49,7 @@ begin
    end process;
 
    input_gen:Process
+
    Begin
       mat_a <= ((std_logic_vector(to_signed(28 ,8)), std_logic_vector(to_signed(122,8)), std_logic_vector(to_signed(80 ,8)), std_logic_vector(to_signed(42 ,8)), std_logic_vector(to_signed(54 ,8)), std_logic_vector(to_signed(122,8)), std_logic_vector(to_signed(98 ,8)), std_logic_vector(to_signed(42 ,8)), std_logic_vector(to_signed(99 ,8)), std_logic_vector(to_signed(58 ,8)), std_logic_vector(to_signed(124,8)), std_logic_vector(to_signed(29 ,8)), std_logic_vector(to_signed(21,8))  ),
                 (std_logic_vector(to_signed(113,8)), std_logic_vector(to_signed(85 ,8)), std_logic_vector(to_signed(30 ,8)), std_logic_vector(to_signed(35 ,8)), std_logic_vector(to_signed(41 ,8)), std_logic_vector(to_signed(98 ,8)), std_logic_vector(to_signed(103,8)), std_logic_vector(to_signed(68 ,8)), std_logic_vector(to_signed(15 ,8)), std_logic_vector(to_signed(50 ,8)), std_logic_vector(to_signed(31 ,8)), std_logic_vector(to_signed(80 ,8)), std_logic_vector(to_signed(54,8))  ),
@@ -70,22 +81,54 @@ begin
 
     count_ctrl <= '1';
           
-    wait until rising_edge(clk);
+   
+    --din_all_a_in <= (others=>'0');
+    --din_all_b_in <= (others=>'0');
+    --wait for 5 ns;
+    
 
-    -- Wait one cycle at output
-    -- input is not processed in this cycle
-    --if (dout_valid = '1') then
-      --wait until rising_edge(clk_i);
+    count_ctrl <= '1';
+    if(reset = '0') then
+    --if (dout_valid='0') then
+    for i  in 0 to 12 loop
+      for j in 0 to 12 loop
+
+        --for elem in 0 to 12 loop
+          
+          wait until rising_edge(clk);
+
+          din_all_a_in <= mat_a(i, j);
+          din_all_b_in <= mat_b(i, j);
+          index1 <= i;
+          index2 <= j;
+
+       -- end loop;
+      end loop;
+    end loop;
     --end if;
-
-    din_all_a <= mat_a;
-    din_all_b <= mat_b;
-
+    end if;
 
     count_ctrl <= '0';
-    wait for 100 ns;
-
-    --assert false report "end" severity failure;
+    wait for 10 ns;
 
   end process;  
+
+
+  process
+     variable count_loop : natural range 0 to 170;
+	begin
+		for i  in 0 to 12 loop
+   			for j in 0 to 12 loop	
+   			 	wait until rising_edge(clk);
+				  result_mat(i,j) <= dout_all;
+          indexO1 <= i;
+          indexO2 <= j;
+
+			end loop;
+		end loop;	
+	end process;
+
+
+
+
 end architecture;

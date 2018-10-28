@@ -91,6 +91,19 @@ architecture testset of tb_mat_mul is
     );
   end component;
 
+  Component mac_parallel_13_pipelined is
+  port(
+      clk          : in std_logic;
+      reset        : in std_logic;
+
+      din_2a       : in std_logic_vector(7 downto 0);
+      din_13_a     : in t_mat_line;
+      din_13_b     : in t_mat_line;
+
+      dout         : out std_logic_vector(17 downto 0)
+    );
+  end component;
+
 
   component mac_parallel_all is
   port (
@@ -119,6 +132,7 @@ end component;
   signal din_all_a_in_i, din_all_b_in_i : std_logic_vector(7 downto 0);
   signal dout_i                         : std_logic_vector(17 downto 0); 
   signal dout_13_i                      : std_logic_vector(17 downto 0); 
+  signal dout_13_pipe_i                 : std_logic_vector(17 downto 0); 
   signal dout_all_i                     : std_logic_vector(18 downto 0); 
   signal index1_i                       : natural range 0 to 13;
   signal index2_i                       : natural range 0 to 13;
@@ -196,6 +210,16 @@ begin
       din_13_a    => din_13_a_i, 
       din_13_b    => din_13_b_i, 
       dout        => dout_13_i
+    );
+
+   mac_parallel_13_pipe_i:  mac_parallel_13_pipelined
+    port map(
+      clk         => clk, 
+      reset       => reset_i, 
+      din_2a      => din_13_2a_i, 
+      din_13_a    => din_13_a_i, 
+      din_13_b    => din_13_b_i, 
+      dout        => dout_13_pipe_i
     );
 
   mac_parallel_all_i: mac_parallel_all
